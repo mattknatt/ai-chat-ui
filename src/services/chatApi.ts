@@ -1,6 +1,7 @@
 import type { ChatRequest, ChatResponse, Personality } from '../types/chat'
 
-const CHAT_ENDPOINT = '/api/v1/chat'
+const API_BASE = import.meta.env.VITE_API_BASE_URL ?? ''
+const CHAT_ENDPOINT = `${API_BASE}/api/v1/chat`
 
 export async function sendChatMessage(
   message: string,
