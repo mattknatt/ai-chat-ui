@@ -3,6 +3,7 @@ import type { FormEvent } from 'react'
 import { sendChatMessage } from '../services/chatApi'
 import { PERSONALITIES } from '../types/chat'
 import type { Message, Personality } from '../types/chat'
+import WelcomeModal from './WelcomeModal'
 
 interface ChatSession {
   id: string
@@ -39,6 +40,7 @@ export default function Chat() {
   const [sessions, setSessions] = useState<ChatSession[]>(() => [blankSession()])
   const [activeId, setActiveId] = useState<string>(() => sessions[0].id)
   const [input, setInput] = useState('')
+  const [showWelcome, setShowWelcome] = useState(true)
   const listRef = useRef<HTMLDivElement>(null)
 
   const active = sessions.find((s) => s.id === activeId) ?? sessions[0]
@@ -131,6 +133,8 @@ export default function Chat() {
   if (!active) return null
 
   return (
+    <>
+    {showWelcome && <WelcomeModal onStart={() => setShowWelcome(false)} />}
     <div className="terminal">
       <header className="terminal__bar">
         <div className="terminal__dots" aria-hidden="true">
@@ -270,5 +274,6 @@ export default function Chat() {
         </div>
       </div>
     </div>
+    </>
   )
 }
