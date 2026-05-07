@@ -360,6 +360,59 @@ body {
   .sidebar { width: 160px; }
 }
 
+@media (max-width: 600px) {
+  #root {
+    padding: env(safe-area-inset-top) 0 0;
+    min-height: 100svh;
+  }
+
+  .terminal {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+  }
+
+  .terminal__main {
+    flex-direction: column;
+  }
+
+  /* Sidebar becomes a compact horizontal strip */
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    border-right: none;
+    border-bottom: 1px solid var(--surface0);
+  }
+
+  .sidebar__header {
+    flex-shrink: 0;
+    border-bottom: none;
+    border-right: 1px solid var(--surface0);
+    padding: 8px 12px;
+  }
+
+  .sidebar__list {
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 6px 8px;
+    scrollbar-width: none;
+  }
+
+  .sidebar__list::-webkit-scrollbar { display: none; }
+
+  .sidebar__item {
+    flex-shrink: 0;
+    max-width: 130px;
+  }
+
+  /* Pad prompt above iPhone home bar */
+  .prompt {
+    padding-bottom: calc(12px + env(safe-area-inset-bottom));
+  }
+}
+
 /* ---------- log body ---------- */
 
 .terminal__body {
