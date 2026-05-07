@@ -40,8 +40,11 @@ export default function Chat() {
   const [sessions, setSessions] = useState<ChatSession[]>(() => [blankSession()])
   const [activeId, setActiveId] = useState<string>(() => sessions[0].id)
   const [input, setInput] = useState('')
-  const [showWelcome, setShowWelcome] = useState(true)
+  const [showWelcome, setShowWelcome] = useState(
+    () => localStorage.getItem('chat:welcomed') !== 'true',
+  )
   const listRef = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
 
   const active = sessions.find((s) => s.id === activeId) ?? sessions[0]
 
@@ -54,6 +57,15 @@ export default function Chat() {
   useEffect(() => {
     listRef.current?.scrollTo({ top: listRef.current.scrollHeight })
   }, [active?.messages, active?.pending])
+
+  useEffect(() => {
+    if (!showWelcome) inputRef.current?.focus()
+  }, [showWelcome])
+
+  function handleWelcomeDismiss() {
+    localStorage.setItem('chat:welcomed', 'true')
+    setShowWelcome(false)
+  }
 
   function patchSession(id: string, patch: Partial<ChatSession>) {
     setSessions((prev) =>
@@ -134,7 +146,7 @@ export default function Chat() {
 
   return (
     <>
-    {showWelcome && <WelcomeModal onStart={() => setShowWelcome(false)} />}
+    {showWelcome && <WelcomeModal onStart={handleWelcomeDismiss} />}
     <div className="terminal">
       <header className="terminal__bar">
         <div className="terminal__dots" aria-hidden="true">
@@ -254,6 +266,7 @@ export default function Chat() {
               <span className="prompt__caret">❯</span>
             </span>
             <input
+              ref={inputRef}
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
@@ -261,7 +274,6 @@ export default function Chat() {
               disabled={active.pending}
               spellCheck={false}
               autoComplete="off"
-              autoFocus
             />
             <button
               type="submit"

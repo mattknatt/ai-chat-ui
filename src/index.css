@@ -623,3 +623,13 @@ body {
 .welcome-modal__btn:active {
   transform: translateY(0);
 }
+
+.welcome-modal__btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(203, 166, 247, 0.25);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .welcome-backdrop { animation: none; }
+  .welcome-modal    { animation: none; }
+}
